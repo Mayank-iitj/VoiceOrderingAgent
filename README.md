@@ -3,7 +3,7 @@
   <h1>🎙️ Voice Ordering Agent</h1>
   <p><strong>A Next-Generation Conversational Ordering Backend 
              </strong></p>
-  Deployed URL: https://voiceorderingagent.onrender.com/avatar-client.html 
+ 
 
 
   
@@ -13,7 +13,7 @@
     <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API"><img src="https://img.shields.io/badge/WebSockets-Enabled-blue.svg?style=for-the-badge" alt="WebSockets" /></a>
   </p>
 </div>
-
+  Deployed URL: https://voiceorderingagent.onrender.com/avatar-client.html
 ---
 
 ## 📖 Overview
