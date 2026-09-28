@@ -1,54 +1,121 @@
-# Voice Order Agent
+<div align="center">
+  <img src="https://img.icons8.com/color/144/000000/microphone.png" alt="Voice Agent Logo" width="120" />
+  <h1>🎙️ Voice Order Agent</h1>
+  <p><strong>A Next-Generation Conversational Ordering Backend</strong></p>
 
-Scope: **only** the ordering conversation. Everything else — the customer-facing
-UI, avatar/lipsync rendering, STT/TTS, the KDS, payments, receipts delivery —
-is owned by other parts of the system. This service takes text turns in,
-manages the cart, and hands off a confirmed order as JSON. That's it.
+  <p>
+    <a href="https://nodejs.org"><img src="https://img.shields.io/badge/Node.js-18.x-green.svg?style=for-the-badge&logo=node.js" alt="Node.js" /></a>
+    <a href="https://expressjs.com"><img src="https://img.shields.io/badge/Express-4.x-lightgrey.svg?style=for-the-badge&logo=express" alt="Express" /></a>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API"><img src="https://img.shields.io/badge/WebSockets-Enabled-blue.svg?style=for-the-badge" alt="WebSockets" /></a>
+  </p>
+</div>
 
-## What this service does NOT do
-- No speech-to-text or text-to-speech (bring your own; send/receive plain text)
-- No avatar rendering
-- No payment processing
-- No persistence beyond an in-memory session (add a DB if you need order history here — recommended to keep that in the manager system instead)
-- No SMS/email sending — it emits receipt *text*; delivery is the manager system's job (or bolt on Twilio/SendGrid here if you'd rather own it in this service)
+---
 
-## Run it
+## 📖 Overview
+
+The **Voice Order Agent** is a specialized conversational backend designed exclusively to handle AI-driven food ordering flows. It acts as the intelligent bridge between voice-enabled customer frontends (like kiosks or web apps) and your Kitchen Display System (KDS) or Order Manager. 
+
+It takes text turns in, manages the cart dynamically, and hands off a confirmed, structured order via a webhook payload. 
+
+### 🎯 Scope & Boundaries
+To keep the architecture modular and scalable, this service strictly owns the **conversational logic**. 
+
+**What it does NOT do:**
+- ❌ **Speech-to-Text / Text-to-Speech:** Bring your own! (Or use the browser's native API).
+- ❌ **Avatar Rendering:** Handled by the client (D-ID integration is included out of the box).
+- ❌ **Payments & Receipts:** The manager system owns payment capture and email/SMS delivery.
+- ❌ **Long-term Persistence:** Order history belongs in your main database.
+
+---
+
+## 🏗️ Architecture & Flow
+
+```mermaid
+sequenceDiagram
+    participant User as Customer
+    participant Browser as Web Client (D-ID)
+    participant Agent as Voice Order Agent (Node)
+    participant LLM as LLM (Claude/OpenAI)
+    participant Webhook as KDS / Manager System
+
+    User->>Browser: Speaks order
+    Browser->>Agent: WebSocket: { type: "user_text", text: "..." }
+    Agent->>LLM: Process intent & manage cart
+    LLM-->>Agent: Returns agent response & cart updates
+    Agent-->>Browser: { type: "agent_text" } + { type: "cart_update" }
+    Browser->>User: D-ID Avatar speaks response
+    
+    Note over User, Agent: ...Conversation continues until order is finalized...
+
+    Agent->>Webhook: POST /webhook (Confirmed Order JSON)
+    Webhook-->>Agent: 200 OK
+    Agent-->>Browser: { type: "receipt" }
+```
+
+---
+
+## 🚀 Getting Started
+
+### 1. Prerequisites
+- **Node.js** (v16 or higher)
+- **API Keys**:
+  - `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` (depending on your LLM setup)
+  - `DID_AGENT_ID` & `DID_CLIENT_KEY` (For the browser avatar)
+
+### 2. Local Installation
+
 ```bash
+# Clone the repository
+git clone https://github.com/soraminds-robolink/assignment-mayank-sharma.git
+cd assignment-mayank-sharma
+
+# Install dependencies
 npm install
-cp .env.example .env   # fill in ANTHROPIC_API_KEY and MANAGER_WEBHOOK_URL
+
+# Setup environment variables
+cp .env.example .env
+
+# Start the server
 npm start
 ```
+*The server will start on `http://localhost:8090` (or your configured `PORT`).*
 
-## Integration contract
+---
 
-### 1. Start a session
-```
+## 🔌 Integration Contract
+
+### 1. Start a Session
+Initiate a new conversation to receive a dedicated WebSocket path.
+```http
 POST /session
-→ { "session_id": "...", "ws_path": "/agent/<session_id>" }
 ```
-Call this once per new customer conversation.
-
-### 2. Talk to the agent
-Connect a WebSocket to `ws://<host>:<port><ws_path>`.
-
-**Client → server** (one message shape only):
+**Response:**
 ```json
-{ "type": "user_text", "text": "I'd like two chicken biryanis" }
+{ 
+  "session_id": "ab12-cd34-ef56", 
+  "ws_path": "/agent/ab12-cd34-ef56" 
+}
 ```
-Feed it whatever your STT layer transcribes, one utterance at a time.
 
-**Server → client** (three message types):
+### 2. Connect & Talk (WebSocket)
+Connect your frontend to `ws://<host>:<port><ws_path>`.
+
+**Client → Server:**
+```json
+{ "type": "user_text", "text": "I'd like two chicken biryanis." }
+```
+
+**Server → Client (Streamed updates):**
 ```json
 { "type": "agent_text", "text": "Got it, two chicken biryanis. Anything else?" }
-{ "type": "cart_update", "cart": [ { "item_id": "chicken-biryani", "name": "Chicken Biryani", "price": 13.99, "quantity": 2, "notes": null } ] }
-{ "type": "order_confirmed", "order": { ...full order object... } }
-{ "type": "receipt", "receipt_text": "SPICEHUB-KITCHEN — ORDER RECEIPT\n..." }
+{ "type": "cart_update", "cart": [...] }
+{ "type": "order_confirmed", "order": {...} }
+{ "type": "receipt", "receipt_text": "..." }
 ```
-Feed `agent_text` straight into your TTS/avatar layer to speak it back.
 
-### 3. Order handoff (this is the part "the manager" needs to build against)
-On `confirm_order`, this service POSTs the same order object to
-`MANAGER_WEBHOOK_URL`:
+### 3. The Webhook Handoff
+When the customer confirms the order, this agent securely POSTs a structured JSON payload to your `MANAGER_WEBHOOK_URL`:
 
 ```json
 {
@@ -57,73 +124,41 @@ On `confirm_order`, this service POSTs the same order object to
   "fulfillment": "pickup",
   "phone": "+15551234567",
   "items": [
-    { "item_id": "chicken-biryani", "name": "Chicken Biryani", "quantity": 2, "unit_price": 13.99, "notes": null }
+    { "item_id": "chicken-biryani", "name": "Chicken Biryani", "quantity": 2, "unit_price": 13.99 }
   ],
   "subtotal": 27.98,
-  "currency": "USD",
-  "confirmed_at": "2026-09-27T10:15:00.000Z"
+  "currency": "USD"
 }
 ```
-The manager system owns: writing this to the KDS/order queue, triggering
-payment capture if not already taken, and sending the actual receipt to the
-customer (this service already computed `receipt_text` and pushes it over
-the same WebSocket as a convenience, but treat the webhook payload as the
-source of truth).
 
-**If the webhook call fails**, this service logs it and moves on — the order
-is still confirmed from the customer's point of view. Build retry/alerting
-on the manager side, or ask me to add a local outbox/retry queue here if
-you'd rather this service guarantee delivery.
+---
 
-## Avatar (lipsynced voice)
+## 🎭 Avatar Integration (D-ID)
 
-The avatar renders and lipsyncs entirely in the browser via D-ID's client SDK
-— this service never touches video/audio. All it does is tell the avatar
-*what to say*, using D-ID's `speak()` call rather than D-ID's own built-in
-chat/LLM, so your Claude-driven ordering logic stays the one source of truth
-for what the agent says.
+The service includes a pre-built web client (`public/avatar-client.html`) that uses **D-ID** for ultra-realistic, lip-synced avatar rendering. 
 
-**One-time setup (manual, in D-ID's dashboard):**
-1. Create a D-ID account and an **Agent** in D-ID Studio, picking a
-   presenter/avatar look. This gives you an `agent_id` (e.g. `agt_abc123`).
-2. Get a client key for that agent (safe to expose in the browser — it's
-   scoped like a publishable key, not a secret).
-3. Put both in `.env` as `DID_AGENT_ID` and `DID_CLIENT_KEY`.
+1. Create a D-ID agent and generate a client key.
+2. Add them to your `.env` as `DID_AGENT_ID` and `DID_CLIENT_KEY`.
+3. The frontend fetches these via `/avatar-config` and connects directly to D-ID via WebRTC. The Node service never processes heavy video/audio streams—it just tells the avatar *what to say*.
 
-**Runtime flow:**
-1. Browser loads `public/avatar-client.html`, fetches `/avatar-config` for
-   the agent id + client key, and connects directly to D-ID over WebRTC
-   using `@d-id/client-sdk`.
-2. Browser also opens the ordering WebSocket (`/agent/:sessionId`) as before.
-3. Customer taps the mic → browser's Web Speech API transcribes → sends
-   `user_text` to our agent → agent replies with `agent_text` → browser
-   calls `agentManager.speak({ type: 'text', input: agentText })` → D-ID
-   streams back lipsynced video+audio directly to the `<video>` element.
-4. Idle animation, "acting/reacting" micro-expressions, etc. are D-ID's
-   presenter behavior — not something this service controls. If the team
-   wants custom reactions (e.g. a "confused" look when an item isn't on
-   the menu), that's driven by *what text you send it*, not a separate API.
+---
 
-**Swapping providers:** if the team prefers HeyGen or Simli instead of D-ID,
-only `public/avatar-client.html` and the `/avatar-config` endpoint change —
-`agent.js` and the WebSocket contract stay identical, since the avatar layer
-only ever sees plain text in and renders video out.
+## ☁️ Deployment
 
-**Not yet done, flag to the team:**
-- No STT fallback for browsers without Web Speech API support (swap in
-  Whisper via MediaRecorder if broad browser/phone support matters)
-- No handling for the D-ID connection dropping mid-order — add a
-  reconnect/backoff in `avatar-client.html` before this goes to real users
+This application is ready to be deployed to container-based PaaS providers like **Render**, **Railway**, or **Fly.io**. 
 
-## Menu
-`data/menu.json` — replace with the real feed once the Menu Ingestion module
-(owned elsewhere) is ready. Format:
-```json
-{ "tenant_id": "...", "currency": "USD", "items": [ { "id": "...", "name": "...", "category": "...", "price": 0, "spice_level": "mild|medium|hot|null" } ] }
-```
+> **⚠️ Important Architectural Note:**
+> Because this service currently uses in-memory `Map` data structures to store sessions, **it must be deployed as a single instance**. If you wish to scale horizontally across multiple instances, the in-memory map must first be swapped out for **Redis**.
 
-## Known gaps to flag to the team
-- No auth on `/session` or the webhook call — add before this touches real traffic
-- No session TTL/cleanup — a session that never confirms sits in memory forever
-- Single in-process session store — won't survive a restart or scale past one instance; swap the `Map` for Redis if you run more than one node
-# assignment-mayank-sharma
+---
+
+## 🛠️ Known Gaps & Future Improvements
+- **Security:** Add JWT or API Key authentication to `/session` and the Webhook route before going to production.
+- **Session Management:** Implement session TTLs to clean up abandoned carts.
+- **Scalability:** Migrate session state from a local `Map` to Redis for multi-node deployments.
+- **Resilience:** Add WebRTC reconnection logic in the frontend if the D-ID connection drops.
+
+---
+<div align="center">
+  <i>Engineered for seamless ordering experiences.</i>
+</div>
