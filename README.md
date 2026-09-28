@@ -1,6 +1,6 @@
 <div align="center">
   <img src="https://img.icons8.com/color/144/000000/microphone.png" alt="Voice Agent Logo" width="120" />
-  <h1>🎙️ Voice Order Agent</h1>
+  <h1>🎙️ Voice Ordering Agent</h1>
   <p><strong>A Next-Generation Conversational Ordering Backend</strong></p>
 
   <p>
