@@ -43,6 +43,11 @@ const app = express();
 app.use(express.json());
 app.use(express.static('public')); // serves /avatar-client.html
 
+// Redirect root to the avatar client
+app.get('/', (req, res) => {
+  res.redirect('/avatar-client.html');
+});
+
 // Proxy route to bypass CSP for iframe embedding
 app.use('/proxy-dd', createProxyMiddleware({
   target: 'https://sf-classic.order.online',
