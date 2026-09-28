@@ -2,8 +2,8 @@
   <img src="https://img.icons8.com/color/144/000000/microphone.png" alt="Voice Agent Logo" width="120" />
   <h1>🎙️ Voice Ordering Agent</h1>
   <p><strong>A Next-Generation Conversational Ordering Backend 
-             Deployed URL: https://voiceorderingagent.onrender.com/avatar-client.html </strong></p>
-
+             </strong></p>
+  Deployed URL: https://voiceorderingagent.onrender.com/avatar-client.html 
   <p>
     <a href="https://nodejs.org"><img src="https://img.shields.io/badge/Node.js-18.x-green.svg?style=for-the-badge&logo=node.js" alt="Node.js" /></a>
     <a href="https://expressjs.com"><img src="https://img.shields.io/badge/Express-4.x-lightgrey.svg?style=for-the-badge&logo=express" alt="Express" /></a>
