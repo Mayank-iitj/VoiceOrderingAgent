@@ -1,0 +1,222 @@
+{
+  "tenant_id": "spicehub-kitchen",
+  "currency": "USD",
+  "items": [
+    {
+      "id": "samosa-2",
+      "name": "Samosa (2)",
+      "category": "Veg Appetizers",
+      "price": 2.5,
+      "spice_level": "mild",
+      "dietary_type": "Vegan"
+    },
+    {
+      "id": "gobi-manchurian",
+      "name": "Gobi Manchurian",
+      "category": "Veg Appetizers",
+      "price": 10.99,
+      "spice_level": "medium",
+      "dietary_type": "Veg"
+    },
+    {
+      "id": "chilli-paneer",
+      "name": "Chilli Paneer",
+      "category": "Veg Appetizers",
+      "price": 13.99,
+      "spice_level": "hot",
+      "dietary_type": "Veg"
+    },
+    {
+      "id": "madras-chicken-65",
+      "name": "Madras Chicken 65",
+      "category": "Non Veg Appetizers",
+      "price": 12.99,
+      "spice_level": "hot",
+      "dietary_type": "Non-Veg"
+    },
+    {
+      "id": "chicken-lollipop-wet",
+      "name": "Chicken Lollipop - Wet",
+      "category": "Non Veg Appetizers",
+      "price": 13.99,
+      "spice_level": "hot",
+      "dietary_type": "Non-Veg"
+    },
+    {
+      "id": "tandoori-shrimp",
+      "name": "Tandoori Shrimp",
+      "category": "Non Veg Appetizers",
+      "price": 13.99,
+      "spice_level": "medium",
+      "dietary_type": "Non-Veg"
+    },
+    {
+      "id": "paneer-butter-masala",
+      "name": "Paneer Butter Masala",
+      "category": "Veg Curries",
+      "price": 13.99,
+      "spice_level": "mild",
+      "dietary_type": "Veg"
+    },
+    {
+      "id": "dal-makhani",
+      "name": "Dal Makhani",
+      "category": "Veg Curries",
+      "price": 11.99,
+      "spice_level": "mild",
+      "dietary_type": "Veg"
+    },
+    {
+      "id": "malai-kofta",
+      "name": "Malai Kofta",
+      "category": "Veg Curries",
+      "price": 13.99,
+      "spice_level": "mild",
+      "dietary_type": "Veg"
+    },
+    {
+      "id": "butter-chicken",
+      "name": "Butter Chicken",
+      "category": "Non Veg Curries",
+      "price": 13.99,
+      "spice_level": "mild",
+      "dietary_type": "Non-Veg"
+    },
+    {
+      "id": "egg-masala",
+      "name": "Egg Masala",
+      "category": "Non Veg Curries",
+      "price": 11.99,
+      "spice_level": "medium",
+      "dietary_type": "Egg"
+    },
+    {
+      "id": "chettinad-goat-curry",
+      "name": "Chettinad Goat Curry",
+      "category": "Non Veg Curries",
+      "price": 13.99,
+      "spice_level": "hot",
+      "dietary_type": "Non-Veg"
+    },
+    {
+      "id": "veg-fried-rice",
+      "name": "Veg Fried Rice",
+      "category": "Rice",
+      "price": 11.99,
+      "spice_level": "mild",
+      "dietary_type": "Veg"
+    },
+    {
+      "id": "chicken-fried-rice",
+      "name": "Chicken Fried Rice",
+      "category": "Rice",
+      "price": 13.99,
+      "spice_level": "mild",
+      "dietary_type": "Non-Veg"
+    },
+    {
+      "id": "chicken-65-fried-rice",
+      "name": "Chicken 65 Fried Rice",
+      "category": "Rice",
+      "price": 13.99,
+      "spice_level": "hot",
+      "dietary_type": "Non-Veg"
+    },
+    {
+      "id": "chicken-biryani",
+      "name": "Chicken Biryani",
+      "category": "Hyderabadi Dum Biryani",
+      "price": 13.99,
+      "spice_level": "medium",
+      "dietary_type": "Non-Veg"
+    },
+    {
+      "id": "gongura-chicken-biryani",
+      "name": "Gongura Chicken Biryani",
+      "category": "Hyderabadi Dum Biryani",
+      "price": 13.99,
+      "spice_level": "medium",
+      "dietary_type": "Non-Veg"
+    },
+    {
+      "id": "goat-biryani",
+      "name": "Goat Biryani",
+      "category": "Hyderabadi Dum Biryani",
+      "price": 13.99,
+      "spice_level": "medium",
+      "dietary_type": "Non-Veg"
+    },
+    {
+      "id": "paneer-biryani",
+      "name": "Paneer Biryani",
+      "category": "Hyderabadi Dum Biryani",
+      "price": 13.99,
+      "spice_level": "medium",
+      "dietary_type": "Veg"
+    },
+    {
+      "id": "naan",
+      "name": "Naan",
+      "category": "Breads",
+      "price": 1.99,
+      "spice_level": null,
+      "dietary_type": "Veg"
+    },
+    {
+      "id": "garlic-naan",
+      "name": "Garlic Naan",
+      "category": "Breads",
+      "price": 2.49,
+      "spice_level": null,
+      "dietary_type": "Veg"
+    },
+    {
+      "id": "roti",
+      "name": "Roti",
+      "category": "Breads",
+      "price": 2.49,
+      "spice_level": null,
+      "dietary_type": "Vegan"
+    },
+    {
+      "id": "gulab-jamun-3",
+      "name": "Gulab Jamun (3)",
+      "category": "Desserts",
+      "price": 2.99,
+      "spice_level": null,
+      "dietary_type": "Veg"
+    },
+    {
+      "id": "rasmalai-3",
+      "name": "Rasmalai (3)",
+      "category": "Desserts",
+      "price": 2.99,
+      "spice_level": null,
+      "dietary_type": "Veg"
+    },
+    {
+      "id": "mango-lassi",
+      "name": "Mango Lassi",
+      "category": "Drinks",
+      "price": 2.49,
+      "spice_level": null,
+      "dietary_type": "Veg"
+    },
+    {
+      "id": "spicehub-veg-soup",
+      "name": "Spicehub Veg Soup",
+      "category": "Soups",
+      "price": 5.99,
+      "spice_level": "mild",
+      "dietary_type": "Vegan"
+    },
+    {
+      "id": "sweet-corn-soup",
+      "name": "Sweet Corn Soup",
+      "category": "Soups",
+      "price": 6.99,
+      "spice_level": null,
+      "dietary_type": "Veg"
+    }
+  ]
+}
