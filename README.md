@@ -1,18 +1,19 @@
 <div align="center">
   <img src="https://img.icons8.com/color/144/000000/microphone.png" alt="Voice Agent Logo" width="120" />
   <h1>🎙️ Voice Ordering Agent</h1>
-  <p><strong>A Next-Generation Conversational Ordering Backend</strong></p>
+  <p><strong>A Next-Generation Conversational Ordering Backend 
+             </strong></p>
+ 
 
+
+  
   <p>
     <a href="https://nodejs.org"><img src="https://img.shields.io/badge/Node.js-18.x-green.svg?style=for-the-badge&logo=node.js" alt="Node.js" /></a>
     <a href="https://expressjs.com"><img src="https://img.shields.io/badge/Express-4.x-lightgrey.svg?style=for-the-badge&logo=express" alt="Express" /></a>
     <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API"><img src="https://img.shields.io/badge/WebSockets-Enabled-blue.svg?style=for-the-badge" alt="WebSockets" /></a>
   </p>
 </div>
-
----
-
-## 📖 Overview
+Deployed URL: https://voiceorderingagent.onrender.com/avatar-client.html
 
 The **Voice Order Agent** is a specialized conversational backend designed exclusively to handle AI-driven food ordering flows. It acts as the intelligent bridge between voice-enabled customer frontends (like kiosks or web apps) and your Kitchen Display System (KDS) or Order Manager. 
 
